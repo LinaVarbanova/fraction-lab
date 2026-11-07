@@ -31,6 +31,7 @@ test('four interactive discoveries, exact feedback and persisted progress', asyn
   await expect(page.locator('.tab-number.done')).toHaveCount(4);
   await expect(page.getByText('100 XP', { exact: true })).toBeVisible();
   await page.reload();
+  await page.getByRole('button', { name: 'Свободна лаборатория' }).click();
   await expect(page.locator('.tab-number.done')).toHaveCount(4);
   await page.getByRole('button', { name: 'Карта на уменията' }).click();
   await expect(page.locator('.skill-number.done')).toHaveCount(4);
@@ -38,6 +39,7 @@ test('four interactive discoveries, exact feedback and persisted progress', asyn
 });
 test('number line supports pointer dragging', async ({ page }) => {
   await page.goto('/');
+  await page.getByRole('button', { name: 'Свободна лаборатория' }).click();
   await page.getByRole('tab', { name: '03 Числова ос' }).click();
   const track = page.locator('.number-track');
   const box = (await track.boundingBox())!;
@@ -54,7 +56,8 @@ for (const viewport of [{ width: 1440, height: 1000 }, { width: 1024, height: 76
     await page.setViewportSize(viewport);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto('/');
-    await expect(page.getByRole('heading', { level: 1 })).toContainText('Големи открития');
+    await expect(page.getByRole('heading', { level: 1 })).toContainText('Построй отговора');
+    await page.getByRole('button', { name: 'Свободна лаборатория' }).click();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     for (const id of ['split', 'equivalence', 'line', 'common']) {
       await page.locator(`#tab-${id}`).click();

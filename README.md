@@ -36,6 +36,10 @@ Every mission uses a manipulable model or ordered reasoning path; numerical answ
 
 Completed missions earn 50 XP independently, or 30 XP with a hint. Exploratory discoveries earn 25 XP each. Rewards are issued only once; replaying or revealing a hint after completion does not alter the original completion record or farm XP. Achievements are derived from actual completed missions. Parent and skill views show real completion data, with no claim of long-term mastery.
 
+## Task-focused play design
+
+Play opens on a dedicated screen with a high-contrast Bulgarian instruction, a large mathematical target and a tactile interactive model. The split lab explicitly advances from dividing into four parts to coloring three. Mission instructions lead the visual hierarchy, while compact navigation and a persistent check action keep attention on the current task. The academy uses warm paper tones, stronger world colors and locally bundled Cyrillic typography.
+
 ## Saved progress
 
 IndexedDB stores results, drafts, hint usage, attempt counts and the current mission. A synchronous localStorage backup protects the latest snapshot during navigation/reloads and provides a fallback when IndexedDB is unavailable. Writes are serialized, and old Stage A discoveries migrate automatically. Current completion records describe the first successful solve; full attempt history and mastery across sessions are later work.
