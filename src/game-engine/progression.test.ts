@@ -40,6 +40,7 @@ describe('world progression, rewards and persistence boundaries', () => {
     expect(sanitizeGame({ ...state, results: { invalid: {}, 'parts-bridge': { assisted: 'yes', attempts: -1 } }, currentMission: 'invalid' }).results).toEqual({});
     expect(() => sanitizeGame({ version: 99 })).toThrow();
     expect(() => sanitizeGame(null)).toThrow();
+    expect(() => sanitizeGame({ version: 2 })).toThrow();
   });
   it('sanitizes imported draft indexes and slider bounds before rendering', () => {
     const state = emptyGame();

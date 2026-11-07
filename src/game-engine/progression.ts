@@ -33,9 +33,10 @@ export function sanitizeGame(value: unknown): GameState {
   const game = emptyGame();
   if (!value || typeof value !== 'object' || !('version' in value) || value.version !== 2) throw new Error('Неподдържан формат на записа.');
   const raw = value as Record<string, unknown>;
+  const object = (input: unknown): input is Record<string, unknown> => !!input && typeof input === 'object' && !Array.isArray(input);
+  if (!Array.isArray(raw.discoveries) || !object(raw.results) || !object(raw.drafts) || (raw.currentMission !== null && typeof raw.currentMission !== 'string')) throw new Error('Невалидно резервно копие.');
   if (Array.isArray(raw.discoveries)) game.discoveries = activityIds.filter(id => (raw.discoveries as unknown[]).includes(id));
   if (raw.currentMission && typeof raw.currentMission === 'string' && missionById(raw.currentMission)) game.currentMission = raw.currentMission;
-  const object = (input: unknown): input is Record<string, unknown> => !!input && typeof input === 'object' && !Array.isArray(input);
   const safeCount = (input: unknown, maximum = 1000000): input is number => typeof input === 'number' && Number.isSafeInteger(input) && input >= 0 && input <= maximum;
   if (object(raw.results)) for (const [id,result] of Object.entries(raw.results)) {
     if (missionById(id) && object(result) && typeof result.assisted === 'boolean' && safeCount(result.attempts) && typeof result.completedAt === 'number' && Number.isFinite(result.completedAt) && result.completedAt >= 0) game.results[id] = { assisted: result.assisted, attempts: result.attempts, completedAt: result.completedAt };
