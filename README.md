@@ -1,10 +1,10 @@
 # Fraction Lab · Математическата академия
 
-Playable Stage A of the Bulgarian mathematics academy, built with React, TypeScript, Vite, Motion, SVG, and KaTeX. Student-facing copy is Bulgarian. Fonts and mathematical assets are bundled locally; no runtime accounts or external APIs are required.
+Stages A–B of a Bulgarian mathematics adventure, built with React, TypeScript, Vite, Motion, SVG and KaTeX. Student-facing content is Bulgarian. Fonts and math assets are bundled locally; no accounts or runtime APIs are required.
 
-## Run
+## Run and verify
 
-Requires Node.js 22.12+ (Node 24 recommended).
+Use Node.js 22.12+ (Node 24 recommended).
 
 ```sh
 npm ci
@@ -14,30 +14,49 @@ npm run build
 npm run test:e2e
 ```
 
-Browser tests use `/usr/bin/chromium` if available, otherwise Playwright's installed Chromium. Set `CHROMIUM_PATH` to override. Run `npx playwright install --with-deps chromium` when needed.
+Browser tests use `/usr/bin/chromium` when available, otherwise Playwright's installed Chromium. Set `CHROMIUM_PATH` to override. Install with `npx playwright install --with-deps chromium` when needed.
 
-## Interactive demonstration
+## Stage B: Playable Academy
 
-- Split a whole into 1–12 equal parts and toggle pieces. A synchronized fraction circle and stacked fraction show the selected amount.
-- Subdivide two thirds using a live multiplier; the length stays constant while both fraction terms change.
-- Drag a point along a number line, or use arrow keys, Home and End. Position snaps to eighths; checking uses exact rational equality.
-- Experiment with common partitions for two thirds and one fourth. Live bars transform only when the denominator is valid. Distinguishes a common denominator from the least common denominator.
-- All four labs are immediately available, with direct next-activity navigation. There is no repetitive introductory unlock gate.
+All seven worlds now contain two original interactive missions, 14 in total:
 
-The academy includes an original SVG illustration, seven-world curriculum map, skill view, parent summary, local discovery persistence, keyboard alternatives, and reduced-motion support. Discoveries award XP once; they do not claim long-term mastery. Worlds 4–7 are clearly marked as future stages, not playable placeholder questions.
+| World | Interactive missions |
+| --- | --- |
+| Залата на частите | Build a fraction bridge; assemble an improper fraction and see its mixed number |
+| Огледалният лабиринт | Transform equivalent fractions; group pieces to simplify |
+| Кулата на знаменателите | Synchronize partitions; reorder fraction steps |
+| Машината на операциите | Build an addition-machine output; measure division as portions |
+| Лабораторията на неизвестното | Balance an equation; solve an equation with two operations |
+| Островът на логиката | Model fractions of remainders in two scenarios |
+| Арената на математиците | Build reverse-operation paths and recover original quantities |
+
+One completed mission opens the next world. The second mission remains optional. A student can attempt an entrance mission in any later world immediately, so familiar basic fractions never become a long gate. Unlocking earlier worlds does not mark their missions as solved.
+
+Every mission uses a manipulable model or ordered reasoning path; numerical answers alone cannot complete the remainder and reverse-reasoning missions. The four Stage A exploratory labs remain available, including pointer-driven and keyboard-operated number-line positioning.
+
+Completed missions earn 50 XP independently, or 30 XP with a hint. Exploratory discoveries earn 25 XP each. Rewards are issued only once; replaying or revealing a hint after completion does not alter the original completion record or farm XP. Achievements are derived from actual completed missions. Parent and skill views show real completion data, with no claim of long-term mastery.
+
+## Saved progress
+
+IndexedDB stores results, drafts, hint usage, attempt counts and the current mission. A synchronous localStorage backup protects the latest snapshot during navigation/reloads and provides a fallback when IndexedDB is unavailable. Writes are serialized, and old Stage A discoveries migrate automatically. Current completion records describe the first successful solve; full attempt history and mastery across sessions are later work.
+
+Parent view supports validated JSON export/import for moving progress between devices. Import replaces the current save; invalid files leave it intact. Invalid mission IDs, indices, counts and slider bounds are sanitized. No data leaves the device.
 
 ## Structure
 
-- `src/math-core`: immutable normalized BigInt rationals, exact operations/comparisons, common denominators, mixed-number conversion and answer parsing.
-- `src/interactions`: the four interactive labs and deterministic hints.
-- `src/components`: reusable fraction bars, fraction circles, mathematical notation and original academy illustration.
-- `src/storage`: versioned local discovery storage with corrupt-data and unavailable-storage handling.
-- `tests`: browser interaction, persistence, pointer dragging, responsive and reduced-motion checks.
+- `src/math-core`: immutable BigInt rationals and exact arithmetic.
+- `src/content`: typed, original mission definitions and Bulgarian explanations.
+- `src/problem-engine`: exact model checking, including intermediate reasoning requirements.
+- `src/game-engine`: unlocks, recommendations, one-time rewards, achievements and save validation.
+- `src/interactions`: exploration labs and mission mechanisms.
+- `src/components`: mathematical renderers, bars/circles, SVG academy and backup tools.
+- `src/storage`: IndexedDB, backup, migration and failure handling.
+- `tests`: complete seven-world journey, all optional missions, touch/keyboard interaction, migration, resume, backups and responsive layouts.
 
-Stage A uses localStorage for its small discovery record. IndexedDB, full multi-session mastery, the complete curriculum, challenge modes and offline PWA caching belong to subsequent stages.
+This is the playable academy foundation, not the full Stage C curriculum. The 150–200-problem bank, validated generators, full topic coverage, multi-session mastery, five game modes, advanced solution engine and offline PWA caching remain for subsequent stages. Arena tasks are original advanced-reasoning exercises, not official competition questions.
 
 ## GitHub Pages
 
-The workflow in `.github/workflows/deploy.yml` tests and builds on pushes to `main`, then deploys `dist` using GitHub Pages. Relative asset paths support the `/fraction-lab/` repository URL. In repository **Settings → Pages**, choose **GitHub Actions** as the build source if it is not already enabled. The workflow attempts to enable Pages automatically when repository permissions allow it.
+`.github/workflows/deploy.yml` tests and builds pushes to `main`, then deploys `dist`. Relative assets support `/fraction-lab/` hosting. Repository **Settings → Pages → Source** must be **GitHub Actions**. If automatic enablement is rejected with `Resource not accessible by integration`, a repository administrator must enable Pages once, then rerun the workflow.
 
-Expected site address after successful deployment: https://linavarbanova.github.io/fraction-lab/
+Expected site after successful deployment: https://linavarbanova.github.io/fraction-lab/
